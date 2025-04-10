@@ -1,0 +1,384 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
+/* Global Styles */
+
+/* Blurred overlay */
+.blur-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Password box styling */
+.password-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.password-container input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #800000;
+    border-radius: 5px;
+}
+
+.password-container button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #800000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.password-container button:hover {
+    background-color: #600000;
+}
+
+#passwordInput {
+    width: 80%;
+}
+
+
+body {
+    font-family: "Montserrat", serif;
+    /* background: linear-gradient(to right, #F2E8C6, #DAD4B5); */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    color: #800000;
+    text-align: center;
+
+}
+
+h1, h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin: 20px 0;
+}
+
+.main_title{
+    width: 100%;
+    background-image: url('/static/images/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+}
+
+/* Gen Z Style for Summary Section */
+
+.summary_box {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;
+
+}
+
+.summary-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    border-radius: 20px;
+    width: 250px;
+    min-width: 200px;
+    font-family: "Montserrat", serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: maroon;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.summary-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* Larger text for "Rancangan" */
+.big-text {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Smaller text for "Peraturan Daerah" */
+.small-text {
+    font-size: 16px;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+
+/* Provincial Summary - Vibrant Look */
+.provincial-summary {
+    /* background: linear-gradient(135deg, #ff007f, #6a00f4); */
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.provincial-summary:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 25px rgba(255, 0, 127, 0.5);
+}
+
+/* Regional Summary - Cool Look */
+.regional-summary {
+    /* background: linear-gradient(135deg, #00bcd4, #8e44ad); */
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.regional-summary:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 25px rgba(0, 188, 212, 0.5);
+}
+
+/* Count Styling */
+.summary-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 22px;
+}
+
+.summary-count i {
+    font-size: 24px;
+}
+
+
+/* General Text Styling */
+.summary h2 {
+    font-size: 2.5rem; /* Large, eye-catching heading */
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.summary p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.summary strong {
+    font-weight: bold;
+    color: #fffc00; /* Pop of color for the count */
+    font-size: 1.4rem;
+}
+
+/* Hover effect for the summary section */
+.summary:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.summary_detail_perkada,
+.summary_detail_perda{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
+.summary_detail_perkada p,
+.summary_detail_perda p
+ {
+
+    padding: 3px;
+    background :
+  }
+
+
+  td:nth-child(1) {
+    text-align: center;
+  }
+
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+select {
+    width: 200px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+select:hover {
+    border-color: #0056b3;
+}
+
+select:focus {
+    border-color: #004494;
+    box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
+}
+
+
+/* Table Block Styling */
+.table-block {
+    width: 80%;
+    margin-bottom: 30px; /* Space between tables */
+    padding: 10px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #f8f9fa, #e3e7ed); /* Soft gradient */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Table Styling */
+table {
+    width: 80%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.8); /* Soft white background */
+    border-radius: 10px;
+    overflow: hidden; /* Keeps border-radius effect */
+}
+
+/* Header Styling */
+th {
+    background: #982B1C; /* Soft blue/purple tone */
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    border: 1px solid #F2E8C6;
+
+}
+
+/* Cell Styling */
+th, td {
+    padding: 2px;
+}
+
+
+
+td {
+    background: rgba(245, 245, 245, 0.9); /* Light soft background */
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* Adjusting Column Width */
+th:nth-child(1), td:nth-child(1) { width: 5%; }  /* ID */
+th:nth-child(2), td:nth-child(2) { width: 25%; } /* Title */
+th:nth-child(3), td:nth-child(3) { width: 10%; } /* Date Discussed */
+th:nth-child(4), td:nth-child(4) { width: 10%; } /* Meeting Notes */
+th:nth-child(5), td:nth-child(5) { width: 25%; } /* Status */
+th:nth-child(6), td:nth-child(6) { width: 25%; } /* Revision Details */
+
+/* Hover Effect on Table Rows */
+tr:hover {
+    background: rgba(220, 220, 220, 0.6); /* Softer hover effect */
+    transition: 0.3s;
+}
+
+
+
+/* Buttons */
+.button_side{
+    position: absolute;
+    right: 0;
+    top: 9rem;
+    color: #800000;
+    margin : .5rem;
+    font-weight:900;
+}
+button {
+    padding: 10px 20px;
+    background-color: #DD5746;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #FFC470;
+    transform: scale(1.1);
+}
+
+.btn-add{
+    padding: 10px 20px;
+    background-color: #D2665A;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px;
+}
+/* Link Styling */
+a {
+    color: #800000;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Form Styling */
+input, select, textarea {
+    padding: 10px;
+    border-radius: 12px;
+    border: 2px solid #333;
+    margin: 10px 0;
+    width: 100%;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #800000; /* Neon pink focus border */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    table {
+        width: 90%;
+    }
+    h1, h2 {
+        font-size: 2rem;
+    }
+    button {
+        width: 100%;
+        padding: 15px;
+    }
+}

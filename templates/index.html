@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DATABASE 2025</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+    // main password
+function checkPassword() {
+    const password = document.getElementById("passwordInput").value;
+    const correctPassword = "admin123"; // Change this to your actual password
+    const blurOverlay = document.getElementById("blurOverlay");
+    const errorMsg = document.getElementById("errorMsg");
+
+    if (password === correctPassword) {
+        sessionStorage.setItem("authenticated", "true"); // Store authentication in sessionStorage
+
+        // Add a small delay before removing blur (better UX)
+        setTimeout(() => {
+            blurOverlay.style.display = "none";
+        }, 200);
+    } else {
+        errorMsg.style.display = "block"; // Show error message
+    }
+}
+
+// Check authentication status when the page loads
+document.addEventListener("DOMContentLoaded", function () {
+    if (sessionStorage.getItem("authenticated") === "true") {
+        document.getElementById("blurOverlay").style.display = "none";
+    }
+});
+
+
+
+    function makeEditable(dbName, draftId) {
+    console.log(`Trying to edit: row-${dbName}-${draftId}`);  // Debugging log
+
+    const row = document.getElementById(`row-${dbName}-${draftId}`);
+    if (!row) {
+        console.error(`Row not found: row-${dbName}-${draftId}`);
+        return;
+    }
+
+    const cells = row.querySelectorAll(".editable");
+
+    cells.forEach(cell => {
+        const field = cell.dataset.field;
+
+        if (field === "status") {
+            const currentStatus = cell.textContent.trim();
+            const radioOptions = ["pembahasan", "harmonisasi", "fasilitasi", "pending/batal"];
+
+            let radioHtml = "";
+            radioOptions.forEach(option => {
+                radioHtml += `
+                    <label style="display: block;">
+                        <input type="radio" name="status-${draftId}" value="${option}" ${currentStatus === option ? "checked" : ""}>
+                        ${option}
+                    </label>
+                `;
+            });
+
+            cell.innerHTML = radioHtml;
+        } else {
+            cell.contentEditable = true;
+        }
+    });
+
+    row.querySelector(".edit-btn").style.display = "none";
+    row.querySelector(".save-btn").style.display = "inline-block";
+}
+
+
+    function deleteDraft(db_name, draft_id) {
+            fetch(`/delete/${db_name}/${draft_id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Draft deleted successfully!");
+                    location.reload();
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => console.error("Error deleting draft:", error));
+        }
+
+        function updateDraft(dbName, draftId) {
+    // Select the row using the correct ID
+    const row = document.getElementById(`row-${dbName}-${draftId}`);
+    if (!row) {
+        console.error(`Row not found: row-${dbName}-${draftId}`);
+        return;
+    }
+
+    // Get all editable cells
+    let cells = row.querySelectorAll(".editable");
+
+    // Extract the values from each cell
+    let title = cells[0].innerText.trim();
+    let date_discussed = cells[1].innerText.trim();
+    let selectedStatus = document.querySelector(`input[name="status-${draftId}"]:checked`);
+    let status = selectedStatus ? selectedStatus.value : row.cells[2].innerText.trim(); // Default to old value if no change
+    let meeting_notes = cells[3].innerText.trim();
+    let revision_details = cells[4].innerText.trim();
+
+    console.log("Updating Draft:", {
+        title,
+        date_discussed,
+        status,
+        meeting_notes,
+        revision_details
+    });
+
+    // Send update request to the server
+    fetch(`/update/${dbName}/${draftId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, date_discussed, status, meeting_notes, revision_details })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Response from server:", data);
+        if (data.success) {
+            alert("Update successful!");
+            location.reload(); // Auto-reload the page after a successful update
+        } else {
+            alert("Update failed: " + data.message);
+            console.error("Update error:", data.message);
+        }
+    })
+    .catch(error => console.error("Fetch error:", error));
+}
+
+
+
+
+
+document.getElementById("statusDropdown").addEventListener("change", function() {
+    let selectedValue = this.value;
+    document.querySelector(`input[name="status"][value="${selectedValue}"]`).checked = true;
+});
+
+
+
+
+
+    </script>
+</head>
+<body>
+    <div class="blur-overlay" id="blurOverlay">
+        <div class="password-container">
+            <h1>PASSWORD 🙏 </h1>
+            <input type="password" id="passwordInput" placeholder="Enter password">
+            <button onclick="checkPassword()">Submit</button>
+            <p id="errorMsg" style="color: red; display: none;">Incorrect password!</p>
+        </div>
+    </div>
+
+
+    <div class="main_title">
+        <h1 >PRODUK HUKUM DAERAH PROVINSI <br>
+                PROGRES 2025
+            </h1>
+
+    </div>
+    <!-- Login/Logout Button -->
+    {% if is_admin %}
+        <a href="{{ url_for('logout') }}" class="btn button_side">Logout</a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="btn button_side">Login</a>
+    {% endif %}
+
+    <!-- Admin only: Add New Draft Buttons -->
+
+
+    <h3>Rancangan yang telah terproses</h3>
+    <div class="summary_box">
+        <div class="summary-card provincial-summary">
+            <div class="summary-text">
+                <span class="big-text">Rancangan</span>
+                <span class="small-text">Peraturan Daerah</span>
+            </div>
+            <span class="summary-count">
+                <i class="fas fa-file-alt"></i> {{ provincial_count }}
+            </span>
+        </div>
+        <div class="summary-card regional-summary">
+            <div class="summary-text">
+                <span class="big-text">Rancangan</span>
+                <span class="small-text">Peraturan Gubernur</span>
+            </div>
+            <span class="summary-count">
+                <i class="fas fa-file-alt"></i> {{ regional_count }}
+            </span>
+        </div>
+    </div>
+
+
+
+
+
+<h1>Rancangan Peraturan Daerah</h1>
+{% if is_admin %}
+<a href="{{ url_for('edit', db_name='provincial') }}" class="btn-add">Add New Provincial Draft</a>
+{% endif %}
+<div class="summary_detail_perda">
+    <p>Pembahasan: {{ pembahasan_count_provincial }}</p>
+    <p>Harmonisasi: {{ harmonisasi_count_provincial }}</p>
+    <p>Fasilitasi: {{ fasilitasi_count_provincial }}</p>
+</div>
+<table id="provincial-table">
+    <thead>
+        <tr>
+            <th>NO</th>
+            <th>JUDUL</th>
+            <th>TANGGAL</th>
+            <th>PROGRES</th> <!-- Status moved UP -->
+            <th>CATATAN</th> <!-- Meeting Notes moved DOWN -->
+            <th>AGENDA SELANJUTNYA</th>
+            {% if is_admin %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+
+    </thead>
+    <tbody>
+        {% for draft in provincial_drafts %}
+        <tr id="row-provincial-{{ draft[0] }}">
+            <td>{{ loop.index }}</td>
+            <td class="editable">{{ draft[1] }}</td> <!-- Title -->
+            <td class="editable">{{ draft[2] }}</td> <!-- Date Discussed -->
+            <td class="editable" data-field="status">{{ draft[3] }}</td> <!-- Status moved UP -->
+            <td class="editable">{{ draft[4] }}</td> <!-- Meeting Notes moved DOWN -->
+            <td class="editable">{{ draft[5] }}</td> <!-- Revision Details -->
+
+                {% if is_admin %}
+                <td>
+                    <button class="edit-btn" onclick="makeEditable('provincial', '{{ draft[0] }}')">Edit</button>
+<button class="save-btn" onclick="updateDraft('provincial', '{{ draft[0] }}')" style="display: none;">Save</button>
+
+                    <button onclick="deleteDraft('provincial', {{ draft[0] }})">Delete</button>
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1>Rancangan Peraturan Kepala Daerah</h1>
+{% if is_admin %}
+        <a href="{{ url_for('edit', db_name='regional') }}" class="btn-add">Add New Regional Draft</a>
+{% endif %}
+<div class="summary_detail_perkada">
+    <p>Pembahasan: {{ pembahasan_count_regional }}</p>
+    <p>Harmonisasi: {{ harmonisasi_count_regional }}</p>
+    <p>Fasilitasi: {{ fasilitasi_count_regional }}</p>
+</div>
+<table id="regional-table">
+    <thead>
+        <tr>
+            <th>NO</th>
+            <th>JUDUL</th>
+            <th>TANGGAL</th>
+            <th>PROGRES</th> <!-- Status moved UP -->
+            <th>CATATAN</th> <!-- Meeting Notes moved DOWN -->
+            <th>AGENDA SELANJUTNYA</th>
+            {% if is_admin %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+
+    </thead>
+    <tbody>
+        {% for draft in regional_drafts %}
+        <tr id="row-regional-{{ draft[0] }}">
+            <td>{{ loop.index }}</td>
+            <td class="editable">{{ draft[1] }}</td> <!-- Title -->
+            <td class="editable">{{ draft[2] }}</td> <!-- Date Discussed -->
+            <td class="editable" data-field="status">{{ draft[3] }}</td> <!-- Status moved UP -->
+            <td class="editable">{{ draft[4] }}</td> <!-- Meeting Notes moved DOWN -->
+            <td class="editable">{{ draft[5] }}</td> <!-- Revision Details -->
+
+                {% if is_admin %}
+                <td>
+
+                    <button class="edit-btn" onclick="makeEditable('regional', '{{ draft[0] }}')">Edit</button>
+                    <button class="save-btn" onclick="updateDraft('regional', '{{ draft[0] }}')" style="display: none;">Save</button>
+                    <button onclick="deleteDraft('regional', {{ draft[0] }})">Delete</button>
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
