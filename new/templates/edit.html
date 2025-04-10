@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if draft %}Edit Draft{% else %}Add New Draft{% endif %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+<body class="main_title">
+    <h1>{% if draft %}Edit Draft{% else %}Add New Draft{% endif %}</h1>
+
+    <form action="{% if draft %}{{ url_for('edit', db_name=db_name, draft_id=draft.id) }}{% else %}{{ url_for('add', db_name=db_name) }}{% endif %}" method="POST">
+        <label for="title">Judul:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="date_discussed">TANGGAL:</label>
+        <input type="date" id="date_discussed" name="date_discussed" required>
+
+        <label for="statusDropdown">Progres:</label>
+            <select id="statusDropdown" name="status">
+                <option value="pembahasan">Pembahasan</option>
+                <option value="harmonisasi">Harmonisasi</option>
+                <option value="fasilitasi">Fasilitasi</option>
+                <option value="pending/batal">Keterangan</option>
+            </select>
+
+            
+
+        <label for="meeting_notes">Catatan:</label>
+        <textarea id="meeting_notes" name="meeting_notes"></textarea>
+
+
+
+        <label for="revision_details">Agenda Selanjutnya:</label>
+        <input type="text" id="revision_details" name="revision_details">
+
+        <button type="submit">Add Draft</button>
+    </form>
+
+
+    <a href="{{ url_for('index') }}">Back to Dashboard</a>
+</body>
+</html>
