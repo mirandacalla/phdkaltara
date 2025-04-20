@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, session
-import sqlite3
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import os
+
 
 app = Flask(__name__)
 app.secret_key = '1234'  # Change this to a strong secret key
